@@ -8,13 +8,12 @@ import (
 )
 
 func TestRead(t *testing.T) {
-	f, err := os.Open("xxx.log")
+	f, err := os.Open("../ximage/fonts/ttfs/CEF-CJK.ttf")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer f.Close()
-	ctx := NewCtxpWithReader(context.TODO(), 55782932, f)
-	ctx = ctx.WithAfterFunc(nil)
+	ctx := NewCtxpWithReader(context.TODO(), 23469120, f)
 	go func() {
 		for {
 			t.Log(ctx.Process())
@@ -23,8 +22,8 @@ func TestRead(t *testing.T) {
 				t.Log(err)
 				return
 			}
-			t.Log(p)
-			if p == 0 {
+			t.Logf("%.4f", p)
+			if p == 1 {
 				return
 			}
 		}
