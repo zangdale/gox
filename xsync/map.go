@@ -2,6 +2,10 @@ package xsync
 
 import "sync"
 
+/*
+	通用 带锁的 map
+	读写综合优于 sync.Map
+*/
 type mutexMap[K comparable, V any] struct {
 	sy sync.RWMutex
 	m  map[K]V
