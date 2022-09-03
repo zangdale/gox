@@ -82,8 +82,11 @@ func AESDecrypt(data []byte, key []byte) ([]byte, error) {
 }
 
 //EncryptByAES Aes加密 后 base64 再加
-func EncryptByAES(data []byte) (string, error) {
-	res, err := AESEncrypt(data, PwdKey)
+func EncryptByAES(data, key []byte) (string, error) {
+	if key == nil {
+		key = PwdKey
+	}
+	res, err := AESEncrypt(data, key)
 	if err != nil {
 		return "", err
 	}
@@ -91,10 +94,13 @@ func EncryptByAES(data []byte) (string, error) {
 }
 
 //DecryptByAES Aes 解密
-func DecryptByAES(data string) ([]byte, error) {
+func DecryptByAES(data string, key []byte) ([]byte, error) {
+	if key == nil {
+		key = PwdKey
+	}
 	dataByte, err := base64.StdEncoding.DecodeString(data)
 	if err != nil {
 		return nil, err
 	}
-	return AESDecrypt(dataByte, PwdKey)
+	return AESDecrypt(dataByte, key)
 }

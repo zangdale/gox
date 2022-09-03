@@ -47,8 +47,11 @@ func RSADecrypt(ciphertext, prkey []byte) ([]byte, error) {
 }
 
 //EncryptByRSA RSA加密 后 base64 再加
-func EncryptByRSA(data []byte) (string, error) {
-	res, err := RSAEncrypt(data, defaultPuKey)
+func EncryptByRSA(data, pubKey []byte) (string, error) {
+	if pubKey == nil {
+		pubKey = defaultPuKey
+	}
+	res, err := RSAEncrypt(data, pubKey)
 	if err != nil {
 		return "", err
 	}
@@ -56,12 +59,15 @@ func EncryptByRSA(data []byte) (string, error) {
 }
 
 //DecryptByRSA RSA 解密
-func DecryptByRSA(data string) ([]byte, error) {
+func DecryptByRSA(data string, prvKey []byte) ([]byte, error) {
+	if prvKey == nil {
+		prvKey = defaultPuKey
+	}
 	dataByte, err := base64.StdEncoding.DecodeString(data)
 	if err != nil {
 		return nil, err
 	}
-	return RSADecrypt(dataByte, defaultPrKey)
+	return RSADecrypt(dataByte, prvKey)
 }
 
 var defaultPrKey = []byte(`-----BEGIN RSA PRIVATE KEY-----
