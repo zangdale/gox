@@ -14,6 +14,18 @@ func TestJUnmarshal(t *testing.T) {
 	t.Log(a.A)
 	//xxxx
 }
+func TestJUnmarshalP(t *testing.T) {
+	type A struct {
+		A string `json:"a"`
+	}
+
+	a, err := Unmarshal[*A]([]byte(`{"a":"xxxx"}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(a.A)
+	//xxxx
+}
 
 func TestKeys(t *testing.T) {
 	t.Log(KeysMaps("1", "2", "a", "6", "cc"))
