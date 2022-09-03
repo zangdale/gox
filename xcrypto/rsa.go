@@ -48,7 +48,7 @@ func RSADecrypt(ciphertext, prkey []byte) ([]byte, error) {
 
 //EncryptByRSA RSA加密 后 base64 再加
 func EncryptByRSA(data []byte) (string, error) {
-	res, err := RSAEncrypt(data, []byte(puKey))
+	res, err := RSAEncrypt(data, defaultPuKey)
 	if err != nil {
 		return "", err
 	}
@@ -61,10 +61,10 @@ func DecryptByRSA(data string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return RSADecrypt(dataByte, []byte(prkey))
+	return RSADecrypt(dataByte, defaultPrKey)
 }
 
-var prkey = `-----BEGIN RSA PRIVATE KEY-----
+var defaultPrKey = []byte(`-----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQCxS4S/GqCSzAedNFo2eXJ+DSw87DVJ8xCbqKD7hi2cr7kFD8B+
 pjOKHjZc4f8JyEdZfX2zqoXQgSGDLtYA5lWLk6PQUBQhDYPB7nZwOsz1Wsv8AKM5
 EbPTp3TcUGnRY4AF70SEoTRP3nqbaqIKuRq2FOHTd5sZjiv+gFLLXUH3VQIDAQAB
@@ -78,11 +78,16 @@ KHJSg+qAKzPK1JRkDe2v7QhNBgWtlYRkT4igUi5SsRuGrUqTbAILjOwb/wJBAI9v
 xRL9anepXXjUN5CdGJ2Tf9c0Miw1+Qzn+OJg7lLR1MMnAK4N3wwAqLC1jgo9WxHg
 D5ozsPgEi0iIRpoJYvcCQHGWzEdXGUvHTg2Rla1eDohQJagBW1/qSCHGpyAcMayq
 AavvbzJqEABHZjtb7u1e7ms1erw2u1wvrqqR+FCSRcE=
------END RSA PRIVATE KEY-----`
+-----END RSA PRIVATE KEY-----`)
 
-var puKey = `-----BEGIN PUBLIC KEY-----
+var defaultPuKey = []byte(`-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCxS4S/GqCSzAedNFo2eXJ+DSw8
 7DVJ8xCbqKD7hi2cr7kFD8B+pjOKHjZc4f8JyEdZfX2zqoXQgSGDLtYA5lWLk6PQ
 UBQhDYPB7nZwOsz1Wsv8AKM5EbPTp3TcUGnRY4AF70SEoTRP3nqbaqIKuRq2FOHT
 d5sZjiv+gFLLXUH3VQIDAQAB
------END PUBLIC KEY-----`
+-----END PUBLIC KEY-----`)
+
+func SetKEY(prKey, puKey []byte) {
+	defaultPrKey = prKey
+	defaultPuKey = puKey
+}
