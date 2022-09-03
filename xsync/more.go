@@ -20,23 +20,23 @@ import (
 	"sync/atomic"
 )
 
-type more struct {
+type More struct {
 	doneCount uint32
 	count     uint32
 	sync.Mutex
 }
 
 // NewMore 执行几次 , count 为 0 和 count =1 相同
-func NewMore(count uint32) *more {
+func NewMore(count uint32) *More {
 	if count == 0 {
 		count = 1
 	}
-	return &more{
+	return &More{
 		count: count,
 	}
 }
 
-func (o *more) Do(f func()) bool {
+func (o *More) Do(f func()) bool {
 
 	if atomic.LoadUint32(&o.doneCount) < atomic.LoadUint32(&o.count) {
 		o.doSlow(f)
@@ -46,7 +46,7 @@ func (o *more) Do(f func()) bool {
 	return false
 }
 
-func (o *more) doSlow(f func()) {
+func (o *More) doSlow(f func()) {
 	o.Lock()
 	defer o.Unlock()
 	if o.doneCount < o.count {
